@@ -7,13 +7,12 @@ const socket = require('../socket.js');
 
 socket.on('NEW_PART_REQUEST', (payload) => {
   setTimeout(() => {
-
-    console.log('MANANGER: PART_REQUEST_REVIEWED.', payload);
+    console.log(`MANANGER: Part request ${payload.order.ID}.`, payload);
     socket.emit('PART_REQUEST_REVIEWED', payload);
   }, 1000);
 
-//   setTimeout(() => {
-//     console.log('MANANGER:');
-//     socket.emit('DELIVERED', {...payload, event: 'DELIVERED'});
-//   }, 2000);
+  //   setTimeout(() => {
+  //     console.log('MANANGER:');
+  //     socket.emit('DELIVERED', {...payload, event: 'DELIVERED'});
+  //   }, 2000);
 });
