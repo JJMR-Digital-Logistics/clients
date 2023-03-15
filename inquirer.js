@@ -52,31 +52,47 @@ const signIn = () => {
       console.log(localUser);
       handleSignin(localUser);
 
+      console.log(axiosUser);
+      // if(axiosUser.role === 'admin')
+      // {
+      //   adminMenu();
+      // }
+      // else 
+      // {
+      //   userMenu();
+      // }
 
     });
 };
 
 const handleSignin = async (user) => {
-  let url = `${process.env.EXPRESS_SERVER}/signin`;
-  let userStr = `${user.username}:${user.password}`;
-  let encodedUser = base64.encode(userStr);
-  let config = {
-    url,
-    method: 'post',
-    headers: {
-      'authorization': `basic ${encodedUser}`,
-    },
+  try {
+    let url = `${process.env.EXPRESS_SERVER}/signin`;
+    let userStr = `${user.username}:${user.password}`;
+    let encodedUser = base64.encode(userStr);
+    let config = {
+      url,
+      method: 'post',
+      headers: {
+        'authorization': `basic ${encodedUser}`,
+      },
 
-  };
-  axiosUser = await axios(config);
-  console.log(axiosUser.data);
+    };
+    axiosUser = await axios(config);
+    //console.log(axiosUser);
+    //console.log(axiosUser.data);
+  }
+  catch (error) {
+    console.log(error);
+  }
+
 
 };
 // headers: {
 //   "Authorization": `bearer ${token}`,
 // },
 const signUp = () => {
-  
+
   inquirer
     .prompt([
       {
@@ -107,20 +123,27 @@ const signUp = () => {
 };
 
 const handleSignUp = async (user) => {
-  let url = `${process.env.EXPRESS_SERVER}/signup`;
-  // let userStr = `${user.username}:${user.password}`;
-  // let encodedUser = base64.encode(userStr);
-  let config = {
-    url,
-    method: 'post',
-    data: {
-      'username': user.username,
-      'password': user.password,
-      'role': user.role,
-    },
-  };
-  axiosUser = await axios(config);
-  console.log(axiosUser.data);
+  try {
+    let url = `${process.env.EXPRESS_SERVER}/signup`;
+    // let userStr = `${user.username}:${user.password}`;
+    // let encodedUser = base64.encode(userStr);
+    let config = {
+      url,
+      method: 'post',
+      data: {
+        'username': user.username,
+        'password': user.password,
+        'role': user.role,
+      },
+    };
+    axiosUser = await axios(config);
+    //axiosUser = await axios(config);
+    //console.log(axiosUser.data);
+  }
+  catch (error) {
+    console.log(error);
+  }
+
 
 };
 
