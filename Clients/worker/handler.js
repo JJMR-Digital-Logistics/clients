@@ -9,10 +9,10 @@ const partRequest = (socket, payload = null) => {
     payload = {
       worker: chance.name(),
       orderID: chance.guid(),
-      partName: chance.shuffle(['brick', 'saw', 'wrench', 'hammer']),
+      partName: chance.pickone(['brick', 'saw', 'wrench', 'hammer']),
       partID: chance.guid(),
-      partQuantity: chance.integer({ min: 1, max: 100 }),
-      priority: chance.shuffle(['Minor/low', 'Major/high', 'Critical/severe']),
+      partQuantity: chance.integer({ min: 1, max: 50 }),
+      priority: chance.pickone(['Minor/low', 'Major/high', 'Critical/severe']),
     };
   }
 
