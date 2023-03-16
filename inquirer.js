@@ -8,27 +8,31 @@ require('dotenv').config();
 let localUser;
 let currentUser;
 
-inquirer
-  .prompt([
-    {
-      name: 'user_choice',
-      type: 'list',
-      message: 'Please login',
-      choices: ['Signin', 'Signup'],
-    },
-  ])
-  .then((answer) => {
-    if (answer.user_choice === 'Signin') {
-      clearLocalUser();
-      signIn();
-      //console.log('Welcome to your signin');
-    }
-    else if (answer.user_choice === 'Signup') {
-      clearLocalUser();
-      signUp();
-      //console.log('Please enter your info to signup');
-    }
-  });
+const startInquire = () => {
+  inquirer
+    .prompt([
+      {
+        name: 'user_choice',
+        type: 'list',
+        message: 'Please login',
+        choices: ['Signin', 'Signup'],
+      },
+    ])
+    .then((answer) => {
+      if (answer.user_choice === 'Signin') {
+        clearLocalUser();
+        signIn();
+        //console.log('Welcome to your signin');
+      }
+      else if (answer.user_choice === 'Signup') {
+        clearLocalUser();
+        signUp();
+        //console.log('Please enter your info to signup');
+      }
+    });
+};
+
+
 
 const signIn = () => {
   inquirer
@@ -47,16 +51,19 @@ const signIn = () => {
     .then(async (answer) => {
       localUser.username = answer.userName;
       localUser.password = answer.pWord;
-      console.log(localUser);
+      //console.log(localUser);
 
       currentUser = await handleSignin(localUser);
-      console.log('currentUser: ', currentUser);
-      if (currentUser.role === 'admin') {
-        adminMenu();
-      }
-      else {
-        userMenu();
-      }
+      //console.log('currentUser: ', currentUser);
+      console.log('****************************************');
+      console.log('');
+      // if (currentUser.role === 'admin') {
+      //   adminMenu();
+      // }
+      // else {
+      //   userMenu();
+      // }
+      menu();
     });
 };
 
@@ -64,7 +71,7 @@ const handleSignin = async (user) => {
   try {
     let url = `${process.env.EXPRESS_SERVER}/signin`;
     let userStr = `${user.username}:${user.password}`;
-    let encodedUser = base64.encode(userStr);
+    //let encodedUser = base64.encode(userStr);
     let config = {
       url,
       method: 'post',
@@ -89,9 +96,11 @@ const handleSignin = async (user) => {
 
 
 };
+
 // headers: {
 //   "Authorization": `bearer ${token}`,
 // },
+
 const signUp = () => {
   inquirer
     .prompt([
@@ -116,9 +125,12 @@ const signUp = () => {
       localUser.username = answer.userName;
       localUser.password = answer.pWord;
       localUser.role = answer.role;
-      console.log(localUser);
+      //console.log(localUser);
+      console.log('****************************************');
+      console.log('');
 
       handleSignUp(localUser);
+      startInquire();
     });
 };
 
@@ -139,6 +151,7 @@ const handleSignUp = async (user) => {
     let axiosUser = await axios(config);
     //axiosUser = await axios(config);
     //console.log(axiosUser.data);
+    console.log('User created');
   }
   catch (error) {
     console.log(error);
@@ -147,6 +160,18 @@ const handleSignUp = async (user) => {
 
 };
 
+const menu = () => {
+  // console.log('****************************************');
+  // console.log('');
+
+  if (currentUser.role === 'admin') {
+    adminMenu();
+  }
+  else {
+    userMenu();
+  }
+
+};
 
 const userMenu = () => {
   inquirer
@@ -181,7 +206,7 @@ const adminMenu = () => {
       },
     ])
     .then((answer) => {
-      console.log(answer.menu);
+      //console.log(answer.menu);
       switch (answer.menu) {
       case 'Search part':
         search();
@@ -200,8 +225,11 @@ const adminMenu = () => {
         break;
       default:
         break;
+
       }
+      
     });
+
 };
 
 const clearLocalUser = () => {
@@ -213,6 +241,8 @@ const clearLocalUser = () => {
 };
 
 const search = () => {
+  console.log('****************************************');
+  console.log('');
   inquirer
     .prompt([
       {
@@ -223,7 +253,7 @@ const search = () => {
     ])
     .then((answer) => {
       console.log('searchTerm', answer.searchTerm);
-      handleSearch(answer.searchTerm);
+      handleSearch(answer.searchTerm).then(() => menu());
     });
 };
 
@@ -248,6 +278,10 @@ const handleSearch = async (searchTerm) => {
 };
 
 const Create = () => {
+
+  console.log('****************************************');
+  console.log('');
+
   let item = {
     name: '',
     quantity: '',
@@ -292,7 +326,7 @@ const Create = () => {
       item.color = answer.color;
       console.log('item', item);
 
-      handleCreate(item);
+      handleCreate(item).then(() => menu());
     });
 };
 
@@ -324,6 +358,9 @@ const handleCreate = async (item) => {
 };
 
 const Read = async () => {
+  console.log('****************************************');
+  console.log('');
+
   try {
     let url = `${process.env.EXPRESS_SERVER}/api/v2/parts`;
     let config = {
@@ -335,7 +372,8 @@ const Read = async () => {
     };
     let axiositem = await axios(config);
     //axiosUser = await axios(config);
-    console.log('axiosUser.data: ', axiositem.data);
+    console.log('');
+    console.log('Part Inventory: ', axiositem.data);
     return axiositem.data;
   }
   catch (error) {
@@ -345,6 +383,9 @@ const Read = async () => {
 
 
 const Update = async () => {
+  console.log('****************************************');
+  console.log('');
+
   let itemsArr = await Read();
   let item;
   //console.log('itemsArr', itemsArr);
@@ -414,7 +455,7 @@ const handleItemUpdate = (item) => {
       updateItem.manufacturer = answer.manufacturer;
       updateItem.color = answer.color;
       console.log('item', updateItem);
-      handleUpdate(item.id, updateItem);
+      handleUpdate(item.id, updateItem).then(() => menu());
     });
 };
 
@@ -447,6 +488,9 @@ const handleUpdate = async (id, item) => {
 
 
 const Delete = async () => {
+  console.log('****************************************');
+  console.log('');
+
   let itemsArr = await Read();
   let item;
   //console.log('Items Array', itemsArr);
@@ -462,7 +506,7 @@ const Delete = async () => {
     .then(async (answer) => {
       console.log('deletedItem', answer.deletedItem);
       item = await handleSearch(answer.deletedItem);
-      handleDelete(item.id);
+      handleDelete(item.id).then(() => menu());
     });
 };
 
@@ -485,19 +529,6 @@ const handleDelete = async (id) => {
   }
 };
 
+startInquire();
 
-
-// const startInquire = () => {
-//   inquirer
-//     .prompt([
-//       {
-//         name: 'user_test',
-//         message: 'Which would you like to choose?',
-//         type: 'list',
-//         choices: ['Proof of life A', 'Proof of life B'],
-//       },
-//     ])
-//     .then((answer) => {
-//       console.log('You have chosen ' + answer.user_test);
-//     });
-// };
+//module.exports = startInquire;
