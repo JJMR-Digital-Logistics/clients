@@ -1,17 +1,22 @@
 'use strict';
 
-// const { io } = require('socket.io-client');
-// const socket = io('http://localhost:3001/jjmr');
+const managerRequest = (socket, payload) => {
+  setTimeout(() => {
+    console.log('MANAGER: PART_REQUEST_REVIEWED.', payload);
+    socket.emit('STEP3', payload);
+  }, 5000);
+};
 
-// socket.on('NEW_PART_REQUEST', (payload) => {
-//   setTimeout(() => {
+const deliveryNotice = (socket, payload) => {
+  setTimeout(() => {
+    console.log('Purchased parts were delivered to your facility!');
+    socket.emit('STEP7', payload);
+  }, 3000);
+};
 
-//     console.log('MANANGER: PART_REQUEST_REVIEWED.');
-//     socket.emit('PART_REQUEST_REVIEWED', payload);
-//   }, 1000);
+module.exports = { managerRequest, deliveryNotice };
 
-//   setTimeout(() => {
-//     console.log('MANANGER:');
-//     socket.emit('DELIVERED', {...payload, event: 'DELIVERED'});
-//   }, 2000);
-// });
+// setTimeout(() => {
+//   console.log('MANAGER:');
+//   socket.emit('DELIVERED', {...payload, event: 'DELIVERED'});
+// }, 2000);

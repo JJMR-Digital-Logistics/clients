@@ -164,8 +164,7 @@ const userMenu = () => {
       if (answer.menu === 'Search') {
         search();
       }
-      else if (answer.menu === 'Request order') 
-      {
+      else if (answer.menu === 'Request order') {
         console.log('Request order');
       }
     });
@@ -184,23 +183,23 @@ const adminMenu = () => {
     .then((answer) => {
       console.log(answer.menu);
       switch (answer.menu) {
-        case 'Search part':
-          search();
-          break;
-        case 'Create part':
-          Create();
-          break;
-        case 'Display all parts':
-          Read();
-          break;
-        case 'Update part':
-          Update();
-          break;
-        case 'Delete part':
-          Delete();
-          break;
-        default:
-          break;
+      case 'Search part':
+        search();
+        break;
+      case 'Create part':
+        Create();
+        break;
+      case 'Display all parts':
+        Read();
+        break;
+      case 'Update part':
+        Update();
+        break;
+      case 'Delete part':
+        Delete();
+        break;
+      default:
+        break;
       }
     });
 };
@@ -249,7 +248,6 @@ const handleSearch = async (searchTerm) => {
 };
 
 const Create = () => {
-
   let item = {
     name: '',
     quantity: '',

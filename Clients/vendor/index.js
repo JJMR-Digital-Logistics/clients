@@ -1,14 +1,10 @@
 'use strict';
 
 const socket = require('../socket.js');
+const { deliveryRequest } = require('./handler.js');
 
-
-socket.on('NEW_PART_REQUEST', (payload) => {
-  socket.emit('PRODUCT_PICKED_UP', payload);
-
-  console.log('VENDOR: Parts picked up');
+socket.on('STEP4', (payload) => {
   setTimeout(() => {
-    socket.emit('PARTS_DELIVERED', payload);
-    console.log('VENDOR: Parts were delivered');
+    deliveryRequest(socket, payload);
   }, 2000);
 });
