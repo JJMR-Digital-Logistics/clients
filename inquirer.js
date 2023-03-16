@@ -208,23 +208,24 @@ const adminMenu = () => {
     .then((answer) => {
       //console.log(answer.menu);
       switch (answer.menu) {
-        case 'Search part':
-          search();
-          break;
-        case 'Create part':
-          Create();
-          break;
-        case 'Display all parts':
-          Read().then(() => menu());
-          break;
-        case 'Update part':
-          Update();
-          break;
-        case 'Delete part':
-          Delete();
-          break;
-        default:
-          break;
+      case 'Search part':
+        search();
+        break;
+      case 'Create part':
+        Create();
+        break;
+      case 'Display all parts':
+        Read();
+        break;
+      case 'Update part':
+        Update();
+        break;
+      case 'Delete part':
+        Delete();
+        break;
+      default:
+        break;
+
       }
       
     });
@@ -277,6 +278,7 @@ const handleSearch = async (searchTerm) => {
 };
 
 const Create = () => {
+
   console.log('****************************************');
   console.log('');
 
