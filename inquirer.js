@@ -97,9 +97,7 @@ const handleSignin = async (user) => {
 
 };
 
-// headers: {
-//   "Authorization": `bearer ${token}`,
-// },
+
 
 const signUp = () => {
   inquirer
